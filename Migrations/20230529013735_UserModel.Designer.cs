@@ -32,12 +32,17 @@ namespace portfoliobackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("IdOfOrganization")
+                       .ValueGeneratedOnAdd()
+                       .HasColumnType("integer");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsBlocked")
-                        .HasColumnType("boolean");
+                    b.Property<string>("Status")
+                       .IsRequired()
+                       .HasColumnType("text");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -46,6 +51,18 @@ namespace portfoliobackend.Migrations
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("Firstname")
+                       .IsRequired()
+                       .HasColumnType("text");
+
+                    b.Property<string>("Surname")
+                       .IsRequired()
+                       .HasColumnType("text");
+
+                    b.Property<string>("Login")
+                       .IsRequired()
+                       .HasColumnType("text");
 
                     b.HasKey("Id");
 

@@ -6,7 +6,7 @@ namespace DotNetApi.Infrastructure
 {
     public class DataDbContext : DbContext
     {
-        public DbSet<Users> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DataDbContext(DbContextOptions<DataDbContext> options) : base() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DotNetApi.Models
+using DotNetApi.Models;
+using DotNetApi.Infrastructure;
 
 namespace TodoApi.Controllers;
 
@@ -8,9 +9,9 @@ namespace TodoApi.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly TodoContext _context;
+    private readonly DataDbContext _context;
 
-    public UsersController(TodoContext context)
+    public UsersController(DataDbContext context)
     {
         _context = context;
     }
@@ -20,7 +21,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
     {
         return await _context.Users
-            .Select(x => ItemToDTO(x))
+            .Select(x => UserToDTO(x))
             .ToListAsync();
     }
 
@@ -44,9 +45,9 @@ public class UsersController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     // <snippet_Update>
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUser(int id, UserDTO todoDTO)
+    public async Task<IActionResult> PutUser(int id, UserDTO userDTO)
     {
-        if (id != todoDTO.Id)
+        if (id != userDTO.Id)
         {
             return BadRequest();
         }
@@ -57,8 +58,7 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
-        User.Name = todoDTO.Name;
-        User.IsComplete = todoDTO.IsComplete;
+        User.Username = userDTO.Username;
 
         try
         {
@@ -94,9 +94,9 @@ public class UsersController : ControllerBase
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(
-            nameof(GetUser),
+            nameof(GetUsers),
             new { id = User.Id },
-            ItemToDTO(User));
+            UserToDTO(User));
     }
     // </snippet_Create>
 

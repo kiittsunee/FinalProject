@@ -1,6 +1,6 @@
 ﻿namespace DotNetApi.Models
 {
-    public class Users
+    public class User
     {
         public int Id { get; set; }
         public int IdOfOrganization { get; set; }
@@ -10,7 +10,7 @@
         public string Email { get; set; }
         public string Status { get; set; }
     }
-    public class UsersDTO
+    public class UserDTO
     {
         public int Id { get; set; }
         public int IdOfOrganization { get; set; }
