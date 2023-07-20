@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DotNetApi.Models;
 using DotNetApi.Infrastructure;
+using TodoApi.Controllers;
+using BCrypt.Net;
 
 namespace TodoApi.Controllers;
 
@@ -79,6 +81,7 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<UserDTO>> PostUser(UserDTO userDTO)
     {
+        Methods methods = new Methods();
         var User = new User
         {
             Id = userDTO.Id,
@@ -88,8 +91,10 @@ public class UsersController : ControllerBase
             Surname = userDTO.Surname,
             Email = userDTO.Email,
             Status = userDTO.Status
-        };
 
+        };
+        userDTO.Login = methods.TranslitName(userDTO.Firstname, userDTO.Username, userDTO.Surname);
+        userDTO.Password = BCrypt.Net.BCrypt.HashPassword(methods.GetPass());
         _context.Users.Add(User);
         await _context.SaveChangesAsync();
 
@@ -131,5 +136,6 @@ public class UsersController : ControllerBase
            Surname = User.Surname,
            Email = User.Email,
            Status = User.Status
+          
        };
 }
